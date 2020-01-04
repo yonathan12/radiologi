@@ -65,7 +65,6 @@
         var nop = noppasien.value;
         var ctdi = ctdipasien.value;
         var dlp = dlppasien.value;
-        console.log([tgl, tglNow]);
 
         if(!nama){
           Swal.fire(
@@ -201,6 +200,13 @@
             Swal.fire(
                   'Pesan',
                   'Total DLP Wajib Diisi',
+                  'warning'
+                )
+            return false;
+        }else if(tgl > tglNow){
+            Swal.fire(
+                  'Pesan',
+                  'Tidak Boleh Melebihi Tanggal Hari Ini',
                   'warning'
                 )
             return false;
