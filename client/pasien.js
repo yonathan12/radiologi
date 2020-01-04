@@ -60,7 +60,7 @@ function getDataDetail(id){
 }
 
 function searchData(){
-    $('.detailPasien').remove();
+    $('.body').load('all_data.php');
     $.ajax({
         url: url+"pasien",
         type: "GET",
