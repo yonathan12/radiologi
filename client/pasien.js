@@ -43,6 +43,7 @@ function getDataDetail(id){
         success:function(response){
             var pasien = response.data;
             $('#idpasien').val(pasien.id);
+            $('#tglperiksa').val(pasien.tglperiksa);
             $('#kdpasien').val(pasien.kdpasien);
             $('#nmpasien').val(pasien.fullnm);
             $('#umpasien').val(pasien.umur);

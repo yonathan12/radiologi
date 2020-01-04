@@ -24,6 +24,7 @@
       <thead>
         <tr>
           <th>No</th>
+          <th>Tanggal Periksa</th>
           <th>Kode Pasien</th>
           <th>Nama Pasien</th>
           <th>Umur Pasien</th>
@@ -41,6 +42,7 @@
       ?>
       <tr>
         <td><?php echo $no++;?></td>
+        <td><?php echo $value['tglperiksa']; ?></td>
         <td><?php echo $value['kdpasien']; ?></td>
         <td><?php echo $value['fullnm']; ?></td>
         <td><?php echo $value['umur'];?></td>

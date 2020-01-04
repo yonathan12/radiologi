@@ -28,6 +28,7 @@ class Pasien extends BaseController
             foreach($getData as $key => $value){
                 $arr = array(
                     'id' => $value->Id,
+                    'tglperiksa' => $value->tglperiksa?date('Y-m-d',strtotime($value->tglperiksa)):'',
                     'kdpasien' => $value->kdpasien,
                     'fullnm' => $value->fullnm,
                     'umur' => $value->umur,
@@ -63,8 +64,10 @@ class Pasien extends BaseController
         $ctdi = $this->post('ctdi');
         $dlp = $this->post('dlp');
         $kdpasien = $this->post('kdpasien');
+        $tgl = $this->post('tanggal');
 
         $data = array(
+            'tglperiksa' => $tgl?$tgl:date('Y-m-d'),
             'kdpasien' => $kdpasien,
             'fullnm' => $fullnm,
             'umur' => $umur,
@@ -90,6 +93,7 @@ class Pasien extends BaseController
     public function index_put(){
         $id = $this->put('id');
         $fullnm = $this->put('nama');
+        $tgl = $this->put('tanggal');
         $umur = $this->put('umur');
         $beratBadan = $this->put('beratBadan');
         $nop = $this->put('nop');
@@ -98,6 +102,7 @@ class Pasien extends BaseController
         $kdpasien = $this->put('kdpasien');
 
         $data = array(
+            'tglperiksa' => $tgl?$tgl:date('Y-m-d'),
             'kdpasien' => $kdpasien,
             'fullnm' => $fullnm,
             'umur' => $umur,

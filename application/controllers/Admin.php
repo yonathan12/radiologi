@@ -46,6 +46,7 @@ class Admin extends CI_Controller {
         $object = new PHPExcel();
 
         $table_columns = array(
+            "Tanggal Pemeriksaan",
             "Kode Pasien",
             "Nama Pasien",
             "Umur",
@@ -59,12 +60,12 @@ class Admin extends CI_Controller {
         );
 
         $column = 0;
-        for ($col='A'; $col !=='L' ; $col++) { 
+        for ($col='A'; $col !=='M' ; $col++) { 
             $object->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
         }
 
-        $object->getActiveSheet()->mergeCells('A1:J1');
-        $object->getActiveSheet()->mergeCells('A2:J2');
+        $object->getActiveSheet()->mergeCells('A1:K1');
+        $object->getActiveSheet()->mergeCells('A2:K2');
         $object->getActiveSheet()->getStyle("A1:A2")->getFont()->setSize(14);
  
 
@@ -87,16 +88,17 @@ class Admin extends CI_Controller {
         $data = $this->db->query('SELECT a.*,b.username FROM data a JOIN user b ON a.usrnme = b.id '.$where.'')->result_object();
         $excel_row = 5;
         foreach ($data as $row) {
-            $object->getActiveSheet()->setCellValueByColumnAndRow(0, $excel_row, $row->kdpasien);
-            $object->getActiveSheet()->setCellValueByColumnAndRow(1, $excel_row, $row->fullnm);
-            $object->getActiveSheet()->setCellValueByColumnAndRow(2, $excel_row, $row->umur);
-            $object->getActiveSheet()->setCellValueByColumnAndRow(3, $excel_row, $row->berat_badan);
-            $object->getActiveSheet()->setCellValueByColumnAndRow(4, $excel_row, $row->nop);
-            $object->getActiveSheet()->setCellValueByColumnAndRow(5, $excel_row, $row->ctdi);
-            $object->getActiveSheet()->setCellValueByColumnAndRow(6, $excel_row, $row->dlp);
-            $object->getActiveSheet()->setCellValueByColumnAndRow(7, $excel_row, $row->username);
-            $object->getActiveSheet()->setCellValueByColumnAndRow(8, $excel_row, $row->lupddt);
-            $object->getActiveSheet()->setCellValueByColumnAndRow(9, $excel_row, $row->lupdtime);
+            $object->getActiveSheet()->setCellValueByColumnAndRow(0, $excel_row, $row->tglperiksa);
+            $object->getActiveSheet()->setCellValueByColumnAndRow(1, $excel_row, $row->kdpasien);
+            $object->getActiveSheet()->setCellValueByColumnAndRow(2, $excel_row, $row->fullnm);
+            $object->getActiveSheet()->setCellValueByColumnAndRow(3, $excel_row, $row->umur);
+            $object->getActiveSheet()->setCellValueByColumnAndRow(4, $excel_row, $row->berat_badan);
+            $object->getActiveSheet()->setCellValueByColumnAndRow(5, $excel_row, $row->nop);
+            $object->getActiveSheet()->setCellValueByColumnAndRow(6, $excel_row, $row->ctdi);
+            $object->getActiveSheet()->setCellValueByColumnAndRow(7, $excel_row, $row->dlp);
+            $object->getActiveSheet()->setCellValueByColumnAndRow(8, $excel_row, $row->username);
+            $object->getActiveSheet()->setCellValueByColumnAndRow(9, $excel_row, $row->lupddt);
+            $object->getActiveSheet()->setCellValueByColumnAndRow(10, $excel_row, $row->lupdtime);
 
             $excel_row++;
         }

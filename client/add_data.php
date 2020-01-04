@@ -1,6 +1,12 @@
 <div class="container-fluid">
 <form id="form">
 <input type="text" class="form-control" id="idpasien" hidden>
+<div class="form-group row">
+    <label for="staticEmail" class="col-sm-2 col-form-label">Tanggal Pemeriksaan</label>
+    <div class="col-sm-10">
+      <input type="date" class="form-control" id="tglperiksa">
+    </div>
+  </div>
   <div class="form-group row">
     <label for="staticEmail" class="col-sm-2 col-form-label">Kode Pasien</label>
     <div class="col-sm-10">
@@ -48,7 +54,10 @@
     <a class="btn btn-danger active" onclick="reset();">Batal</a>
 </div>
 <script>
+  date = new Date();
+  tglNow =  date.getFullYear() + '-' +  ((date.getMonth() > 8) ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1))) + '-' + ((date.getDate() > 9) ? date.getDate() : ('0' + date.getDate()));
     function save(){
+        var tgl = tglperiksa.value;
         var kode = kdpasien.value;
         var nama = nmpasien.value;
         var umur = umpasien.value;
@@ -56,6 +65,7 @@
         var nop = noppasien.value;
         var ctdi = ctdipasien.value;
         var dlp = dlppasien.value;
+        console.log([tgl, tglNow]);
 
         if(!nama){
           Swal.fire(
@@ -99,6 +109,13 @@
                   'warning'
                 )
             return false;
+        }else if(tgl > tglNow){
+            Swal.fire(
+                  'Pesan',
+                  'Tidak Boleh Melebihi Tanggal Hari Ini',
+                  'warning'
+                )
+            return false;
         }
 
         $.ajax({
@@ -108,6 +125,7 @@
                   xhr.setRequestHeader('Authorization', token);
               },
               data: {
+                tanggal : tgl,
                 kdpasien:kode,
                 nama:nama,
                 umur:umur,
@@ -142,6 +160,7 @@
 
     function edit(){
         var id = idpasien.value;
+        var tgl = tglperiksa.value;
         var kode = kdpasien.value;
         var nama = nmpasien.value;
         var umur = umpasien.value;
@@ -195,6 +214,7 @@
               },
               data: {
                 id:id,
+                tanggal:tgl,
                 kdpasien:kode,
                 nama:nama,
                 umur:umur,
