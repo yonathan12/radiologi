@@ -11,11 +11,7 @@ function getData(){
     success:function(response){
         var data= response.data;
         var detail = document.getElementById("detail");
-        // $.each(data, function(i,pasien){
-        // data ='<p class="list-group-item detailPasien" id="'+pasien.id+'">'+pasien.fullnm+' - '+pasien.umur+' </p>';
-        // $(data).appendTo('#detail');
-        // });
-
+        
         $.each(data, function(i,pasien){
             data ='<div class="card mb-3" style="max-width: auto;"><div class="card-header detailPasien" id="'+pasien.id+'">'+pasien.fullnm+'</div></div>';
             $(data).appendTo('#detail');
