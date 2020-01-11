@@ -1,7 +1,6 @@
 
 function getData(){
     $('.detailPasien').remove();
-    $("#loader").show();
     $.ajax({
     url: url+"pasien",
     type: "GET",

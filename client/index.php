@@ -233,6 +233,7 @@
           localStorage.removeItem("fullnm");
           window.location = "http://localhost/bethesda/client/login.php";	
         }else if(menu == "all_data"){
+          $("#loader").show();
           $('.body').load('all_data.php');
           getData();
         }
