@@ -1,6 +1,7 @@
 
 function getData(){
     $('.detailPasien').remove();
+    $("#loader").show();
     $.ajax({
     url: url+"pasien",
     type: "GET",
@@ -11,7 +12,7 @@ function getData(){
     success:function(response){
         var data= response.data;
         var detail = document.getElementById("detail");
-        
+        $("#loader").hide();
         $.each(data, function(i,pasien){
             data ='<div class="card mb-3" style="max-width: auto;"><div class="card-header detailPasien" id="'+pasien.id+'">'+pasien.fullnm+'</div></div>';
             $(data).appendTo('#detail');
