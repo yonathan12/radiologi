@@ -19,6 +19,8 @@ class Pasien extends BaseController
         }
 
         if($id){
+            $this->db->limit(20);
+            $this->db->order_by('lupddt', 'DESC');
             $getData = $this->db->get_where('data',
             array(
                 'usrnme'=>$this->uid(),
