@@ -114,7 +114,7 @@
             <a href="#" class="nav-link klik_menu" id="dashboard">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
-                Dashboard
+                Dosis
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
@@ -127,6 +127,29 @@
               </li>
               <li class="nav-item">
                 <a href="#" class="nav-link klik_menu" id="all_data">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>All Data</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item has-treeview menu-open">
+            <a href="#" class="nav-link klik_menu" id="dashboard">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Reject
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="#" class="nav-link klik_menu" id="add_data_reject">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add Data</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link klik_menu" id="all_data_reject">
                   <i class="far fa-circle nav-icon"></i>
                   <p>All Data</p>
                 </a>
@@ -235,6 +258,12 @@
         }else if(menu == "all_data"){
           $("#loader").show();
           $('.body').load('all_data.php');
+          getData();
+        }else if(menu == "add_data_reject"){
+          $('.body').load('add_data_reject.php');	
+        }else if(menu == "all_data_reject"){
+          $("#loader").show();
+          $('.body').load('all_data_reject.php');
           getData();
         }
 

@@ -75,7 +75,7 @@ class Admin extends CI_Controller {
         $object->getActiveSheet()->setCellValueByColumnAndRow("A1", 1, "Radiologi Bethesda");
         $object->getActiveSheet()->setCellValueByColumnAndRow("A2", 2, "Yogyakarta");
 
-        $object->getActiveSheet()->getStyle('A4:J4')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('F28A8C'); 
+        $object->getActiveSheet()->getStyle('A4:K4')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('F28A8C'); 
         
         $row_judul = 4;
 
