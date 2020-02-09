@@ -83,7 +83,6 @@ class Master extends CI_Controller {
     }
 
     public function hapusUser($id){
-        // die(print_r($id,1));
         $hapus = $this->db->delete('user',array('id' => $id));
         if($hapus > 0){
             $this->session->set_flashdata('message','Berhasil Menghapus Data');

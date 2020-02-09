@@ -1,8 +1,8 @@
 
-function getDataPasien(){
-    $('.detailPasien').remove();
+function getDataReject(){
+    $('.detailReject').remove();
     $.ajax({
-    url: url+"pasien",
+    url: url+"reject",
     type: "GET",
     beforeSend: function (xhr) {
         xhr.setRequestHeader('Authorization', token);
@@ -12,13 +12,14 @@ function getDataPasien(){
         var data= response.data;
         var detail = document.getElementById("detail");
         $("#loader").hide();
-        $.each(data, function(i,pasien){
-            data ='<div class="card mb-3" style="max-width: auto;"><div class="card-header detailPasien" id="'+pasien.id+'">'+pasien.fullnm+'</div></div>';
+        $.each(data, function(i,reject){
+            data ='<div class="card mb-3" style="max-width: auto;"><div class="card-header detailReject" id="'+reject.id+'">'+reject.norm+'</div></div>';
             $(data).appendTo('#detail');
         });
-        $('.detailPasien').click(function(){
-        $('.body').load('add_data.php');
+        $('.detailReject').click(function(){
+        $('.body').load('add_data_reject.php');
         var id = $(this).attr('id');
+        getList();
         getDataDetail(id);
         });
     },
@@ -30,7 +31,7 @@ function getDataPasien(){
 
 function getDataDetail(id){
     $.ajax({
-        url: url+"pasien",
+        url: url+"reject",
         type: "GET",
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', token);
@@ -38,15 +39,14 @@ function getDataDetail(id){
         data: {id:id},
         success:function(response){
             var pasien = response.data;
-            $('#idpasien').val(pasien.id);
+            $('#idreject').val(pasien.id);
             $('#tglperiksa').val(pasien.tglperiksa);
-            $('#kdpasien').val(pasien.kdpasien);
+            $('#ukuran_film').val(pasien.ukuranfilm);
+            $('#norm').val(pasien.norm);
             $('#nmpasien').val(pasien.fullnm);
-            $('#umpasien').val(pasien.umur);
-            $('#brtpasien').val(pasien.berat_badan);
-            $('#noppasien').val(pasien.nop);
-            $('#ctdipasien').val(pasien.ctdi);
-            $('#dlppasien').val(pasien.dlp);
+            $('#nofoto').val(pasien.nofoto);
+            $('#jnsperiksa').val(pasien.jenisperiksa);
+            $('#alasan').val(pasien.alasan);
 
         },
         error:function(jqXHR, textStatus, errorThrown){
@@ -56,9 +56,9 @@ function getDataDetail(id){
 }
 
 function searchData(){
-    $('.body').load('all_data.php');
+    $('.body').load('all_data_reject.php');
     $.ajax({
-        url: url+"pasien",
+        url: url+"reject",
         type: "GET",
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', token);
@@ -68,13 +68,14 @@ function searchData(){
             var data = response.data;
             var detail = document.getElementById("detail");
             $.each(data, function(i,pasien){
-                data ='<div class="card mb-3" style="max-width: auto;"><div class="card-header detailPasien" id="'+pasien.id+'">'+pasien.fullnm+'</div></div>';
+                data ='<div class="card mb-3" style="max-width: auto;"><div class="card-header detailReject" id="'+pasien.id+'">'+pasien.norm+'</div></div>';
                 $(data).appendTo('#detail');
             });
 
-            $('.detailPasien').click(function(){
+            $('.detailReject').click(function(){
             $('.body').load('add_data.php');
             var id = $(this).attr('id');
+            getList();
             getDataDetail(id);
             });
         },
@@ -84,68 +85,84 @@ function searchData(){
     });	
 }
 
+function getList(){
+  $.ajax({
+    url: url+"reject",
+    type: "GET",
+    beforeSend: function (xhr) {
+        xhr.setRequestHeader('Authorization', token);
+    },
+    data: {method :'getList'},
+    success:function(response){
+        var data= response.data;
+        $.each(data, function( key, row ) {
+          $('#ukuran_film').append('<option value="'+row.id+'">'+row.ukuranfilm+'</option>');
+        });
+    },
+    error:function(jqXHR, textStatus, errorThrown){
+        console.log(textStatus, errorThrown);
+    }
+    });	
+}
+
 date = new Date();
   tglNow = date.getFullYear() + '-' + ((date.getMonth() > 8) ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1))) + '-' + ((date.getDate() > 9) ? date.getDate() : ('0' + date.getDate()));
 
   function save() {
     var tgl = tglperiksa.value;
-    var kode = kdpasien.value;
+    var no_rm = norm.value;
     var nama = nmpasien.value;
-    var umur = umpasien.value;
-    var beratBadan = brtpasien.value;
-    var nop = noppasien.value;
-    var ctdi = ctdipasien.value;
-    var dlp = dlppasien.value;
-
-    if (!nama) {
+    var ukuran = ukuran_film.value;
+    var no_foto = nofoto.value;
+    var jenisPeriksa = jnsperiksa.value;
+    var alasanReject = alasan.value;
+    
+    if (tgl > tglNow) {
+      Swal.fire(
+        'Pesan',
+        'Tidak Boleh Melebihi Tanggal Hari Ini',
+        'warning'
+      )
+      return false;
+    }else if (!ukuran) {
+      Swal.fire(
+        'Pesan',
+        'Ukuran Film Wajib Diisi',
+        'warning'
+      )
+      return false;
+    }else if (!no_rm) {
       Swal.fire(
         'Pesan',
         'Nama Pasien Wajib Diisi',
         'warning'
       )
       return false;
-    } else if (!umur) {
+    }else if (!nama) {
       Swal.fire(
         'Pesan',
-        'Umur Pasien Wajib Diisi',
+        'Nama Pasien Wajib Diisi',
         'warning'
       )
       return false;
-    } else if (!beratBadan) {
-      Swal.fire(
+    }else if(!no_foto){
+        Swal.fire(
         'Pesan',
-        'Berat Badan Pasien Wajib Diisi',
+        'Nomor Foto Wajib Diisi',
         'warning'
       )
       return false;
-    }
-    if (!nop) {
-      Swal.fire(
+    }else if(!jenisPeriksa){
+        Swal.fire(
         'Pesan',
-        'No of Phase Wajib Diisi',
+        'Jenis Pemeriksaan Wajib Diisi',
         'warning'
       )
       return false;
-    }
-    if (!ctdi) {
-      Swal.fire(
+    }else if(!alasanReject){
+        Swal.fire(
         'Pesan',
-        'Avarange CTDI Wajib Diisi',
-        'warning'
-      )
-      return false;
-    }
-    if (!dlp) {
-      Swal.fire(
-        'Pesan',
-        'Total DLP Wajib Diisi',
-        'warning'
-      )
-      return false;
-    } else if (tgl > tglNow) {
-      Swal.fire(
-        'Pesan',
-        'Tidak Boleh Melebihi Tanggal Hari Ini',
+        'Alasan Wajib Diisi',
         'warning'
       )
       return false;
@@ -154,20 +171,19 @@ date = new Date();
     $("#simpan").hide();
     $("#batal").hide();
     $.ajax({
-      url: url + "pasien",
+      url: url + "reject",
       type: "POST",
       beforeSend: function(xhr) {
         xhr.setRequestHeader('Authorization', token);
       },
       data: {
         tanggal: tgl,
-        kdpasien: kode,
+        no_rm: no_rm,
         nama: nama,
-        umur: umur,
-        beratBadan: beratBadan,
-        nop: nop,
-        ctdi: ctdi,
-        dlp: dlp
+        ukuran: ukuran,
+        no_foto: no_foto,
+        jenisPeriksa: jenisPeriksa,
+        alasanReject: alasanReject
       },
       success: function(response) {
         const data = response;
@@ -196,59 +212,62 @@ date = new Date();
     });
   }
 
-  function editPasien() {
-    var id = idpasien.value;
+  function editReject() {
+    var id = idreject.value;
     var tgl = tglperiksa.value;
-    var kode = kdpasien.value;
+    var no_rm = norm.value;
     var nama = nmpasien.value;
-    var umur = umpasien.value;
-    var beratBadan = brtpasien.value;
-    var nop = noppasien.value;
-    var ctdi = ctdipasien.value;
-    var dlp = dlppasien.value;
-
-    if (!umur) {
-      Swal.fire(
-        'Pesan',
-        'Umur Pasien Wajib Diisi',
-        'warning'
-      )
-      return false;
-    } else if (!beratBadan) {
-      Swal.fire(
-        'Pesan',
-        'Berat Badan Pasien Wajib Diisi',
-        'warning'
-      )
-      return false;
-    }
-    if (!nop) {
-      Swal.fire(
-        'Pesan',
-        'No of Phase Wajib Diisi',
-        'warning'
-      )
-      return false;
-    }
-    if (!ctdi) {
-      Swal.fire(
-        'Pesan',
-        'Avarange CTDI Wajib Diisi',
-        'warning'
-      )
-      return false;
-    }
-    if (!dlp) {
-      Swal.fire(
-        'Pesan',
-        'Total DLP Wajib Diisi',
-        'warning'
-      )
-      return false;
-    } else if (tgl > tglNow) {
+    var ukuran = ukuran_film.value;
+    var no_foto = nofoto.value;
+    var jenisPeriksa = jnsperiksa.value;
+    var alasanReject = alasan.value;
+    
+    if (tgl > tglNow) {
       Swal.fire(
         'Pesan',
         'Tidak Boleh Melebihi Tanggal Hari Ini',
+        'warning'
+      )
+      return false;
+    }else if (!ukuran) {
+      Swal.fire(
+        'Pesan',
+        'Ukuran Film Wajib Diisi',
+        'warning'
+      )
+      return false;
+    }else if (!no_rm) {
+      Swal.fire(
+        'Pesan',
+        'Nama Pasien Wajib Diisi',
+        'warning'
+      )
+      return false;
+    }else if (!nama) {
+      Swal.fire(
+        'Pesan',
+        'Nama Pasien Wajib Diisi',
+        'warning'
+      )
+      return false;
+    }else if(!no_foto){
+        Swal.fire(
+        'Pesan',
+        'Nomor Foto Wajib Diisi',
+        'warning'
+      )
+      return false;
+    }else if(!jenisPeriksa){
+        Swal.fire(
+        'Pesan',
+        'Jenis Pemeriksaan Wajib Diisi',
+        'warning'
+      )
+      return false;
+    }else if(!alasanReject){
+        Swal.fire(
+        'Pesan',
+        'Alasan Wajib Diisi',
         'warning'
       )
       return false;
@@ -257,28 +276,27 @@ date = new Date();
     $("#simpan").hide();
     $("#batal").hide();
     $.ajax({
-      url: url + "pasien",
+      url: url + "reject",
       type: "PUT",
       beforeSend: function(xhr) {
         xhr.setRequestHeader('Authorization', token);
       },
       data: {
-        id: id,
+        id:id,
         tanggal: tgl,
-        kdpasien: kode,
+        no_rm: no_rm,
         nama: nama,
-        umur: umur,
-        beratBadan: beratBadan,
-        nop: nop,
-        ctdi: ctdi,
-        dlp: dlp
+        ukuran: ukuran,
+        no_foto: no_foto,
+        jenisPeriksa: jenisPeriksa,
+        alasanReject: alasanReject
       },
       success: function(response) {
         const data = response;
         if (data.status === true) {
           Swal.fire(
             'Pesan',
-            data.data,
+            'Data Berhasil Diubah',
             'success'
           )
           reset();
@@ -300,6 +318,6 @@ date = new Date();
     });
   }
 
-function reset() {
+  function reset() {
     $('#form').trigger("reset");
   }

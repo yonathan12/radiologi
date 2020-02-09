@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Admin extends CI_Controller {
+class Reject extends CI_Controller {
     public function __construct()
     {
         parent::__construct();
@@ -12,21 +12,36 @@ class Admin extends CI_Controller {
     }
 
     public function index(){
-        $getData = $this->db->get('data')->result_array();
-        $data['data'] = $getData;
+        $this->db->select('reject.*,film.ukuranfilm as descukuran');
+        $this->db->from('reject');
+        $this->db->join('film','film.id = reject.ukuranfilm');
+        $getData = $this->db->get()->result();
+        foreach ($getData as $key => $value) {
+            $arr[] = array(
+                'Id' => $value->Id,
+                'tglperiksa' => $value->tglperiksa,
+                'ukuranfilm' => $value->descukuran,
+                'norm' => $value->norm,
+                'fullnm' => $value->fullnm,
+                'no_foto' => $value->no_foto,
+                'jenisperiksa' => $value->jenisperiksa,
+                'alasan' => strlen($value->alasan) > 15?substr($value->alasan,0,15):$value->alasan
+            );
+        }
+        $data['data'] = $arr;
         $this->load->view('template/header');
-        $this->load->view('admin/index',$data);
+        $this->load->view('reject/index',$data);
         $this->load->view('template/footer');
     }
 
     public function hapusData($id){
-        $hapus = $this->db->delete('data',array('id' => $id));
+        $hapus = $this->db->delete('reject',array('id' => $id));
         if($hapus > 0){
             $this->session->set_flashdata('message','Berhasil Menghapus Data');
-            redirect('admin');
+            redirect('reject');
         }
     }
-    
+
     public function export()
     {
         $tgl1 = $this->input->post('tgl1');
@@ -46,26 +61,25 @@ class Admin extends CI_Controller {
 
         $table_columns = array(
             "Tanggal Pemeriksaan",
-            "Kode Pasien",
+            "Ukuran Film",
+            "No RM",
             "Nama Pasien",
-            "Umur",
-            "Berat Badan",
-            "NOP",
-            "CTDI",
-            "DLP",
+            "No Foto",
+            "Jenis Periksa",
+            "Alasan",
             "User",
             "Tanggal Dibuat",
             "Jam Dibuat"
         );
 
         $column = 0;
-        for ($col='A'; $col !=='M' ; $col++) { 
+        for ($col='A'; $col !=='L' ; $col++) { 
             $object->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
         }
 
         $object->getActiveSheet()->mergeCells('A1:K1');
         $object->getActiveSheet()->mergeCells('A2:K2');
-        $object->getActiveSheet()->getStyle("A1:A2")->getFont()->setSize(14);
+        $object->getActiveSheet()->getStyle("A1:K2")->getFont()->setSize(14);
  
 
         $object->getActiveSheet()->getStyle( "A1" )->getFont()->setBold( true );
@@ -84,26 +98,31 @@ class Admin extends CI_Controller {
         $column++;
         }
 
-        $data = $this->db->query('SELECT a.*,b.username FROM data a JOIN user b ON a.usrnme = b.id '.$where.'')->result_object();
+        $data = $this->db->query('
+            SELECT a.*,b.username, c.ukuranfilm as descukuran
+             FROM reject a 
+             JOIN user b ON a.usrnme = b.id 
+             JOIN film c ON a.ukuranfilm = c.Id
+             '.$where.'
+             ')->result_object();
         $excel_row = 5;
         foreach ($data as $row) {
             $object->getActiveSheet()->setCellValueByColumnAndRow(0, $excel_row, $row->tglperiksa);
-            $object->getActiveSheet()->setCellValueByColumnAndRow(1, $excel_row, $row->kdpasien);
-            $object->getActiveSheet()->setCellValueByColumnAndRow(2, $excel_row, $row->fullnm);
-            $object->getActiveSheet()->setCellValueByColumnAndRow(3, $excel_row, $row->umur);
-            $object->getActiveSheet()->setCellValueByColumnAndRow(4, $excel_row, $row->berat_badan);
-            $object->getActiveSheet()->setCellValueByColumnAndRow(5, $excel_row, $row->nop);
-            $object->getActiveSheet()->setCellValueByColumnAndRow(6, $excel_row, $row->ctdi);
-            $object->getActiveSheet()->setCellValueByColumnAndRow(7, $excel_row, $row->dlp);
-            $object->getActiveSheet()->setCellValueByColumnAndRow(8, $excel_row, $row->username);
-            $object->getActiveSheet()->setCellValueByColumnAndRow(9, $excel_row, $row->lupddt);
-            $object->getActiveSheet()->setCellValueByColumnAndRow(10, $excel_row, $row->lupdtime);
+            $object->getActiveSheet()->setCellValueByColumnAndRow(1, $excel_row, $row->descukuran);
+            $object->getActiveSheet()->setCellValueByColumnAndRow(2, $excel_row, $row->norm);
+            $object->getActiveSheet()->setCellValueByColumnAndRow(3, $excel_row, $row->fullnm);
+            $object->getActiveSheet()->setCellValueByColumnAndRow(4, $excel_row, $row->no_foto);
+            $object->getActiveSheet()->setCellValueByColumnAndRow(5, $excel_row, $row->jenisperiksa);
+            $object->getActiveSheet()->setCellValueByColumnAndRow(6, $excel_row, $row->alasan);
+            $object->getActiveSheet()->setCellValueByColumnAndRow(7, $excel_row, $row->username);
+            $object->getActiveSheet()->setCellValueByColumnAndRow(8, $excel_row, $row->lupddt);
+            $object->getActiveSheet()->setCellValueByColumnAndRow(9, $excel_row, $row->lupdtime);
 
             $excel_row++;
         }
         $object_writer = PHPExcel_IOFactory::createWriter($object, 'Excel5');
         header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="Export Data.xls"');
+        header('Content-Disposition: attachment;filename="Export Data Reject.xls"');
         $object_writer->save('php://output');
     }
 }

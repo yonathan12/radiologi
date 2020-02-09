@@ -9,4 +9,4 @@
 
 		</div>
 </div>
-<script type="text/javascript" src="pasien.js"></script>
+<script type="text/javascript" src="reject.js"></script>
