@@ -33,16 +33,15 @@ class Auth extends CI_Controller {
         $password = md5($this->input->post('password'));
 
         $user = $this->db->get_where('user',['username' => $username,'password' => $password])->row_array();
-        // die(print_r($user['admin'],1));
+        
         if($user){
             if($user['admin'] == "Y"){
                 $data = [
                     'fullnm' => $user['fullnm'],
-                    'id' => $user['Id']
+                    'id' => $user['id']
                 ];
                 $this->session->set_userdata($data);
                 $this->session->set_flashdata('message',', Selamat Datang '.$user['fullnm']);
-    
                 redirect('admin');
             }else{
                 $this->session->set_flashdata('messageError','Tidak Memiliki Akses');

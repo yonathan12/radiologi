@@ -37,7 +37,7 @@ class Login extends REST_Controller
             $userLogin = $this->Login_model->userLogin($username);
             if(($username === $userLogin['username']) && ($password === $userLogin['password'])){
                 $payload['username'] = $username;
-                $payload['iat'] = $this->date_reg->getTimestamp(); //waktu di buat
+                $payload['iat'] = $this->date_reg->getTimestamp(); 
                 $this->response([
                     'status' => TRUE,
                     'data' => 'Login Sukses',
@@ -65,7 +65,7 @@ class Login extends REST_Controller
         }
         if ($this->Login_model->addUser($data) > 0) {
             $payload['username'] = $username;
-            $payload['iat'] = $this->date_reg->getTimestamp(); //waktu di buat
+            $payload['iat'] = $this->date_reg->getTimestamp(); 
             $this->response([
                 'status' => TRUE,
                 'data' => 'Berhasil Melakukan Registrasi',

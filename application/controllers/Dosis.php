@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Admin extends CI_Controller {
+class Dosis extends CI_Controller {
     public function __construct()
     {
         parent::__construct();
@@ -9,21 +9,26 @@ class Admin extends CI_Controller {
         $this->load->library('excel');
         $this->load->library('form_validation');
         $this->load->model('Auth_model','auth');
+        $this->load->model('Dosis_model','Dosis');
     }
 
     public function index(){
-        $getData = $this->db->get('data')->result_array();
+        $getData = $this->Dosis->get_data();
         $data['data'] = $getData;
         $this->load->view('template/header');
-        $this->load->view('admin/index',$data);
+        $this->load->view('dosis/index',$data);
         $this->load->view('template/footer');
     }
 
-    public function hapusData($id){
-        $hapus = $this->db->delete('data',array('id' => $id));
-        if($hapus > 0){
+    public function delete_dosis(){
+        $id = $this->input->post('id');
+        $get_id =$this->Dosis->delete_dosis($id);
+        if($get_id > 0){
             $this->session->set_flashdata('message','Berhasil Menghapus Data');
-            redirect('admin');
+            redirect('dosis');
+        }else{
+            $this->session->set_flashdata('message1','Gagal Menghapus Data');
+            redirect('dosis');
         }
     }
     

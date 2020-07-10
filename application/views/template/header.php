@@ -74,7 +74,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="admin" class="nav-link klik_menu" id="all_data">
+                <a href="dosis" class="nav-link klik_menu" id="all_data">
                   <i class="far fa-circle nav-icon"></i>
                   <p>All Data</p>
                 </a>
@@ -85,7 +85,7 @@
             <a href="#" class="nav-link klik_menu" id="dashboard">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
-                Data Reject
+                Data Film Reject
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
@@ -96,27 +96,28 @@
                   <p>All Data</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="parameterfilm" class="nav-link klik_menu" id="all_data">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Ukuran Film</p>
-                </a>
-              </li>
+              
             </ul>
           </li>
           <li class="nav-item has-treeview menu-open">
             <a href="#" class="nav-link klik_menu" id="dashboard">
               <i class="nav-icon fas fa-user-alt"></i>
               <p>
-                User
+                Parameter
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="master" class="nav-link" id="add_data">
+                <a href="parameterfilm" class="nav-link klik_menu" id="all_data">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>User</p>
+                  <p>Parameter Film</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="user" class="nav-link" id="add_data">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Parameter User</p>
                 </a>
               </li>
             </ul>

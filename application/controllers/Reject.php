@@ -9,35 +9,41 @@ class Reject extends CI_Controller {
         $this->load->library('excel');
         $this->load->library('form_validation');
         $this->load->model('Auth_model','auth');
+        $this->load->model('Reject_model','Reject');
     }
 
     public function index(){
-        $this->db->select('reject.*,film.ukuranfilm as descukuran');
-        $this->db->from('reject');
-        $this->db->join('film','film.id = reject.ukuranfilm');
-        $getData = $this->db->get()->result();
-        foreach ($getData as $key => $value) {
-            $arr[] = array(
-                'Id' => $value->Id,
-                'tglperiksa' => $value->tglperiksa,
-                'ukuranfilm' => $value->descukuran,
-                'norm' => $value->norm,
-                'fullnm' => $value->fullnm,
-                'no_foto' => $value->no_foto,
-                'jenisperiksa' => $value->jenisperiksa,
-                'alasan' => strlen($value->alasan) > 15?substr($value->alasan,0,15):$value->alasan
-            );
+        $getData = $this->Reject->get_data();
+        if($getData){
+            foreach ($getData as $key => $value) {
+                $arr[] = array(
+                    'id' => $value->id,
+                    'tglperiksa' => $value->tglperiksa,
+                    'ukuranfilm' => $value->desc_film,
+                    'norm' => $value->norm,
+                    'fullnm' => $value->fullnm,
+                    'no_foto' => $value->no_foto,
+                    'jenisperiksa' => $value->jenisperiksa,
+                    'alasan' => strlen($value->alasan) > 15?substr($value->alasan,0,15):$value->alasan
+                );
+            }
+        }else{
+            $arr[] = [];
         }
-        $data['data'] = $arr;
+        $data['data'] = count($arr)>0?$arr:null;
         $this->load->view('template/header');
         $this->load->view('reject/index',$data);
         $this->load->view('template/footer');
     }
 
-    public function hapusData($id){
-        $hapus = $this->db->delete('reject',array('id' => $id));
-        if($hapus > 0){
+    public function delete_reject(){
+        $id = $this->input->post('id');
+        $get_id = $this->Reject->delete_reject($id);
+        if($get_id > 0){
             $this->session->set_flashdata('message','Berhasil Menghapus Data');
+            redirect('reject');
+        }else{
+            $this->session->set_flashdata('message1','Gagal Menghapus Data');
             redirect('reject');
         }
     }
