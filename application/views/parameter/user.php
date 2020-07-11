@@ -44,9 +44,8 @@
         ?>
         </td>
         <td style="text-align: center;">
-        <!-- <a href="#" data-toggle="modal" data-target="#detailUser<?= $usr['Id']; ?>" class="glyphicon glyphicon-pencil btn btn-sm btn-success" ></a> -->
         <a href="#" data-toggle="modal" data-target="#editUser<?= $usr['id']; ?>" class="btn btn-sm btn-primary" >Ubah</a>
-        <a href="<?= base_url('master/hapusUser/'.$usr['id']); ?>" class="btn btn-sm btn-danger hapusUser" >Hapus</a>
+        <a href="<?= base_url('user/delete/'.$usr['id']); ?>" class="btn btn-sm btn-danger hapusUser" >Hapus</a>
         </td>
       </tr>
       <?php }?>
@@ -109,7 +108,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="<?= base_url('master/editUser');?>" method="POST">
+      <form action="<?= base_url('user/update');?>" method="POST">
       <div class="modal-body">
         <input type="text" class="form-control" id="nameEdit<?= $id; ?>" name="fullnm" placeholder="Nama" value="<?= $fullnm; ?>">
         <input type="text" hidden="" name="id" value="<?= $id; ?>">
@@ -119,7 +118,7 @@
         <input type="text" class="form-control" id="usernameEdit<?= $id; ?>" name="username" placeholder="Email" value="<?= $username; ?>" required oninvalid="this.setCustomValidity('Username Wajib Diisi')">
       </div>
       <div class="modal-body">
-        <input type="text" class="form-control" id="passwordEdit<?= $id; ?>" name="password" placeholder="Password" value="" required oninvalid="this.setCustomValidity('Password Wajib Diisi')">
+        <input type="text" class="form-control" id="passwordEdit<?= $id; ?>" name="password" placeholder="Password">
       </div>
       <div class="modal-body">
         <div class="form-check">

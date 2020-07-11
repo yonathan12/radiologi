@@ -6,8 +6,6 @@ class User extends CI_Controller {
     {
         parent::__construct();
         is_logged_in();
-        $this->load->library('form_validation');
-        $this->load->model('Auth_model','auth');
         $this->load->model('User_model','User');
     }
 
@@ -39,11 +37,11 @@ class User extends CI_Controller {
         $get_id = $this->User->create($data);
         if($get_id){
             $this->session->set_flashdata('message','Berhasil Menambahkan User');
-            redirect('parameter/user');
+            redirect('user');
         }
     }
 
-    public function editUser(){
+    public function update(){
         $id = $this->input->post('id');
         $fullnm = $this->input->post('fullnm');
         $username = strtolower($this->input->post('username'));
@@ -58,9 +56,8 @@ class User extends CI_Controller {
                 'password' => $password,
                 'admin' => $admin,
                 'status' => $status,
-                'usrnme' => $this->session->userdata('id'),
-                'lupddt' => date('Y-m-d'),
-                'lupdtime' => date('H:i:s')
+                'updated_by' => $this->session->userdata('id'),
+                'updated_at' => date('Y-m-d H:i:s')
             ];
         }else{
             $data = [
@@ -68,24 +65,23 @@ class User extends CI_Controller {
                 'username' => $username,
                 'admin' => $admin,
                 'status' => $status,
-                'usrnme' => $this->session->userdata('id'),
-                'lupddt' => date('Y-m-d'),
-                'lupdtime' => date('H:i:s')
+                'updated_by' => $this->session->userdata('id'),
+                'updated_at' => date('Y-m-d H:i:s')
             ];
         }
 
-        $update = $this->db->update('user',$data,array('id'=>$id));
+        $update = $this->User->update($data, $id);
         if($update){
             $this->session->set_flashdata('message','Berhasil Mengubah User');
-            redirect('master');
+            redirect('user');
         }
     }
 
-    public function hapusUser($id){
-        $hapus = $this->db->delete('user',array('id' => $id));
-        if($hapus > 0){
+    public function delete($id){
+        $delete = $this->User->delete($id);
+        if($delete > 0){
             $this->session->set_flashdata('message','Berhasil Menghapus Data');
-            redirect('master');
+            redirect('user');
         }
     }
 }

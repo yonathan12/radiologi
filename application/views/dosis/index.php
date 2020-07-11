@@ -49,7 +49,7 @@
                         <td><?php echo $value['ctdi']; ?></td>
                         <td><?php echo $value['dlp']; ?></td>
                         <td style="text-align: center;">
-                            <form method="POST" action="dosis/delete_dosis" id="form_dosis">
+                            <form method="POST" action="dosis/delete" id="form_dosis">
                                 <input type="hidden" value="<?= $value['id'] ?>" name="id"/>
                                 <button type="submit" class="btn btn-sm btn-danger glyphicon glyphicon-trash" id="delete_dosis">Hapus</button>
                             </form>

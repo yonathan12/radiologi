@@ -42,7 +42,7 @@ class Auth extends CI_Controller {
                 ];
                 $this->session->set_userdata($data);
                 $this->session->set_flashdata('message',', Selamat Datang '.$user['fullnm']);
-                redirect('admin');
+                redirect('dosis');
             }else{
                 $this->session->set_flashdata('messageError','Tidak Memiliki Akses');
                 redirect('auth');

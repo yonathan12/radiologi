@@ -109,7 +109,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="parameterfilm" class="nav-link klik_menu" id="all_data">
+                <a href="film" class="nav-link klik_menu" id="all_data">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Parameter Film</p>
                 </a>
