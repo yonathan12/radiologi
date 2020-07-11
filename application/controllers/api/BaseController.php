@@ -27,7 +27,7 @@ class BaseController extends REST_Controller
         } catch (Exception $e) {
             $this->response([
                 'status' => FALSE,
-                'data' => 'Wrong Token'
+                'message' => 'Wrong Token'
             ], REST_Controller::HTTP_OK);
         }
     }
@@ -35,7 +35,7 @@ class BaseController extends REST_Controller
     public function uid(){
         $jwt = $this->input->get_request_header('Authorization');
         $this->decode = JWT::decode($jwt,$this->secretkey,array('HS256'));
-        $getId = $this->db->get_where('user',array('username'=>$this->decode->username))->result()[0]->Id;
+        $getId = $this->db->get_where('user',array('username'=>$this->decode->username))->result()[0]->id;
         return $getId;
     }
 }
