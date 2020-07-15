@@ -2,7 +2,7 @@
     <div class="flash-data" data-flashdata="<?= $this->session->flashdata('message'); ?>"> </div>
     <?php $this->session->flashdata('message') ? $this->session->flashdata('message') : '' ?>
     <div class="card-header">
-        <form class="form-inline" action="admin/export" method="POST">
+        <form class="form-inline" action="dosis/export" method="POST">
             <div class="form-group">
                 <label for="date">Tanggal Awal &nbsp;</label>
                 <input type="date" class="form-control" name="tgl1">
