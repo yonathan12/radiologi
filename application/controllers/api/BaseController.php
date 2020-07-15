@@ -15,6 +15,7 @@ class BaseController extends REST_Controller
     {
         parent::__construct();
         $this->load->model('Login_model');
+        $this->cektoken();
     }
 
     public function cektoken(){

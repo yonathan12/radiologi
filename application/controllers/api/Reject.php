@@ -6,28 +6,22 @@ use Restserver\Libraries\REST_Controller;
 
 class Reject extends BaseController
 {
-    public function __construct()
-    {
-        parent::__construct();
-        $this->cektoken();
-    }
-
     public function index_get()
     {
         $id = $this->get('id');
 
-        $method = $this->get('method');
+        $method = $this->get('methods');
         if ($method) {
             return $this->$method();
         }
 
         if ($id) {
             $this->db->limit(20);
-            $this->db->order_by('lupddt', 'DESC');
+            $this->db->order_by('created_at', 'DESC');
             $getData = $this->db->get_where(
                 'reject',
                 array(
-                    'usrnme' => $this->uid(),
+                    'created_by' => $this->uid(),
                     'id' => $id
                 )
             )->result();
@@ -44,7 +38,7 @@ class Reject extends BaseController
                 );
             }
         } else {
-            $getData = $this->db->get_where('reject', array('usrnme' => $this->uid()))->result();
+            $getData = $this->db->get_where('reject', array('created_by' => $this->uid()))->result();
             foreach ($getData as $key => $value) {
                 $arr[] = array(
                     'id' => $value->Id,
@@ -56,7 +50,7 @@ class Reject extends BaseController
 
         $this->response([
             'status' => TRUE,
-            'data' => $arr
+            'data' => $getData?$arr:null
         ], REST_Controller::HTTP_OK);
     }
 
@@ -66,21 +60,20 @@ class Reject extends BaseController
         $fullnm = $this->post('nama');
         $ukuran = $this->post('ukuran');
         $no_foto = $this->post('no_foto');
-        $jenisPeriksa = $this->post('jenisPeriksa');
-        $alasanReject = $this->post('alasanReject');
+        $jenisPeriksa = $this->post('jenisperiksa');
+        $alasanReject = $this->post('alasanreject');
         $tgl = $this->post('tanggal');
 
         $data = array(
             'tglperiksa' => $tgl ? $tgl : date('Y-m-d'),
             'norm' => $norm,
             'fullnm' => $fullnm,
-            'ukuranfilm' => $ukuran,
+            'film_id' => $ukuran,
             'no_foto' => $no_foto,
-            'jenisPeriksa' => $jenisPeriksa,
+            'jenisperiksa' => $jenisPeriksa,
             'alasan' => $alasanReject,
-            'usrnme' => $this->uid(),
-            'lupddt' => date('Y-m-d'),
-            'lupdtime' => date('H:i:s')
+            'created_by' => $this->uid(),
+            'created_at' => date('Y-m-d H:i:s')
         );
 
         $insert = $this->db->insert('reject', $data);
@@ -88,7 +81,8 @@ class Reject extends BaseController
         if ($insert_id) {
             $this->response([
                 'status' => TRUE,
-                'id' => $insert_id
+                'message' => 'Data Berhasil Ditambahkan',
+                'data' => ['id' => $insert_id]
             ], REST_Controller::HTTP_OK);
         }
     }
@@ -100,28 +94,27 @@ class Reject extends BaseController
         $fullnm = $this->put('nama');
         $ukuran = $this->put('ukuran');
         $no_foto = $this->put('no_foto');
-        $jenisPeriksa = $this->put('jenisPeriksa');
-        $alasanReject = $this->put('alasanReject');
+        $jenisPeriksa = $this->put('jenisperiksa');
+        $alasanReject = $this->put('alasanreject');
         $tgl = $this->put('tanggal');
 
         $data = array(
             'tglperiksa' => $tgl ? $tgl : date('Y-m-d'),
             'norm' => $norm,
             'fullnm' => $fullnm,
-            'ukuranfilm' => $ukuran,
+            'film_id' => $ukuran,
             'no_foto' => $no_foto,
-            'jenisPeriksa' => $jenisPeriksa,
+            'jenisperiksa' => $jenisPeriksa,
             'alasan' => $alasanReject,
-            'usrnme' => $this->uid(),
-            'lupddt' => date('Y-m-d'),
-            'lupdtime' => date('H:i:s')
+            'updated_by' => $this->uid(),
+            'updated_at' => date('Y-m-d H:i:s')
         );
 
         $update = $this->db->update('reject', $data, array('id ' => $id));
         if ($update) {
             $this->response([
                 'status' => TRUE,
-                'data' => "Data Reject Berhasil Di Ubah"
+                'message' => 'Data Reject Berhasil Di Ubah'
             ], REST_Controller::HTTP_OK);
         }
     }
@@ -130,12 +123,12 @@ class Reject extends BaseController
     {
         $keyword = $this->get('search');
         $usrnme = $this->uid();
-        $getData = $this->db->query("SELECT Id,norm, fullnm FROM reject
-        WHERE usrnme = '$usrnme' AND norm like '%$keyword%'")->result();
+        $getData = $this->db->query("SELECT id,norm, fullnm FROM reject
+        WHERE created_by = '$usrnme' AND norm like '%$keyword%'")->result();
         if ($getData) {
             foreach ($getData as $key => $value) {
                 $arr[] = array(
-                    'id' => $value->Id,
+                    'id' => $value->id,
                     'norm' => $value->norm,
                     'fullnm' => $value->fullnm
                 );
@@ -150,13 +143,13 @@ class Reject extends BaseController
         ], REST_Controller::HTTP_OK);
     }
 
-    public function getList()
+    public function get_param_film()
     {
         $getData = $this->db->get('film')->result();
         foreach ($getData as $key => $value) {
             $arr[] = array(
-                'id' => $value->Id,
-                'ukuranfilm' => $value->ukuranfilm
+                'id' => $value->id,
+                'descr' => $value->descr
             );
         }
         $this->response([
