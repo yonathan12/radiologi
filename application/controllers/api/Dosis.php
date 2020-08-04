@@ -128,19 +128,21 @@ class Dosis extends BaseController
 
     public function searchPasien(){
         $keyword = $this->get('search');
+        $page = $this->get('page');
+        $offset = (10 * $page)-10;
         $usrnme = $this->uid();
-        $getData = $this->db->query("SELECT id,fullnm, umur FROM data
-        WHERE usrnme = '$usrnme' AND fullnm like '%$keyword%'")->result();
+        $getData = $this->db->query("SELECT id,fullnm, umur FROM dosis
+        WHERE created_by = '$usrnme' AND fullnm like '%$keyword%' limit 10 offset $offset")->result();
         if($getData){
             foreach($getData as $key => $value){
                 $arr[] = array(
-                    'id' => $value->Id,
+                    'id' => $value->id,
                     'fullnm' => $value->fullnm,
                     'umur' => $value->umur
                 );
             }
         }else{
-            $arr[] = ['fullnm' => 'Tidak Ada Data','umur'=>''];
+            $arr[] = ['id'=> 0, 'fullnm' => 'Tidak Ada Data','umur'=>''];
         }
         
         $this->response([
