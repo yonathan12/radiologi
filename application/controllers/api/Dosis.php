@@ -129,6 +129,8 @@ class Dosis extends BaseController
     public function searchPasien(){
         $keyword = $this->get('search');
         $page = $this->get('page');
+        if(!$page)
+            $page = 1;
         $offset = (10 * $page)-10;
         $usrnme = $this->uid();
         $getData = $this->db->query("SELECT id,fullnm, umur FROM dosis
