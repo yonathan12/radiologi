@@ -48,7 +48,8 @@ class Reject extends BaseController
                     'id' => $value->id,
                     'norm' => $value->norm,
                     'nofoto' => $value->no_foto,
-                    'fullnm' => $value->fullnm
+                    'fullnm' => $value->fullnm,
+                    'created_at' => $value->created_at
                 );
             }
         }
@@ -168,7 +169,8 @@ class Reject extends BaseController
                 $arr[] = array(
                     'id' => $value->id,
                     'norm' => $value->norm,
-                    'fullnm' => $value->fullnm
+                    'fullnm' => $value->fullnm,
+                    'created_at' => $value->created_at
                 );
             }
         } else {
