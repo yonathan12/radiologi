@@ -9,7 +9,7 @@ use \Firebase\JWT\JWT;
 use Restserver\Libraries\REST_Controller;
 class BaseController extends REST_Controller
 {
-    private $secretkey = 'apaanpasswordnya';
+    private $secretkey = 'apaanpasswordnya?';
     private $decode;
     public function __construct()
     {
