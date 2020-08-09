@@ -45,7 +45,7 @@ class Reject extends BaseController
             $getData = $this->db->get_where('reject', array('created_by' => $this->uid()))->result();
             foreach ($getData as $key => $value) {
                 $arr[] = array(
-                    'id' => $value->Id,
+                    'id' => $value->id,
                     'norm' => $value->norm,
                     'nofoto' => $value->no_foto
                 );
