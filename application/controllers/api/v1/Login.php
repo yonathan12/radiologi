@@ -9,7 +9,7 @@ use \Firebase\JWT\JWT;
 use Restserver\Libraries\REST_Controller;
 class Login extends REST_Controller
 {
-    private $secretkey = 'jon123';
+    private $secretkey = 'apaanpasswordnya?';
     public function __construct()
     {
         parent::__construct();
@@ -41,7 +41,7 @@ class Login extends REST_Controller
                 $this->response([
                     'status' => FALSE,
                     'message' => 'Login Gagal, Masukan Email & Password yang terdaftar'
-                ], REST_Controller::HTTP_OK);
+                ], REST_Controller::HTTP_UNAUTHORIZED);
             }
         }
     }
@@ -57,8 +57,8 @@ class Login extends REST_Controller
         } catch (Exception $e) {
             $this->response([
                 'status' => FALSE,
-                'message' => 'Wrong Token'
-            ], REST_Controller::HTTP_OK);
+                'message' => 'Token tidak terdaftar'
+            ], REST_Controller::HTTP_UNAUTHORIZED);
         }
     }
 }

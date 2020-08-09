@@ -1,11 +1,17 @@
 <?php
 
-require APPPATH . 'controllers/api/BaseController.php';
+require APPPATH . 'controllers/api/v1/BaseController.php';
 
 use Restserver\Libraries\REST_Controller;
 
 class Reject extends BaseController
 {
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->library('form_validation');
+    }
+
     public function index_get()
     {
         $id = $this->get('id');
@@ -16,8 +22,6 @@ class Reject extends BaseController
         }
 
         if ($id) {
-            $this->db->limit(20);
-            $this->db->order_by('created_at', 'DESC');
             $getData = $this->db->get_where(
                 'reject',
                 array(
@@ -27,7 +31,7 @@ class Reject extends BaseController
             )->result();
             foreach ($getData as $key => $value) {
                 $arr = array(
-                    'id' => $value->Id,
+                    'id' => $value->id,
                     'tglperiksa' => $value->tglperiksa ? date('Y-m-d', strtotime($value->tglperiksa)) : '',
                     'ukuranfilm' => $value->ukuranfilm,
                     'norm' => $value->norm,
@@ -56,8 +60,17 @@ class Reject extends BaseController
 
     public function index_post()
     {
+        $this->form_validation->set_rules('fullnm', 'Nama Lengkap', 'required');
+        if ($this->form_validation->run() == FALSE) {
+            return $this->response([
+                'status' => False,
+                'message' => [
+                    'fullnm' => form_error('fullnm')
+                ]
+            ], REST_Controller::HTTP_BAD_REQUEST);
+        }
         $norm = $this->post('no_rm');
-        $fullnm = $this->post('nama');
+        $fullnm = $this->post('fullnm');
         $ukuran = $this->post('ukuran');
         $no_foto = $this->post('no_foto');
         $jenisPeriksa = $this->post('jenisperiksa');
@@ -84,14 +97,30 @@ class Reject extends BaseController
                 'message' => 'Data Berhasil Ditambahkan',
                 'data' => ['id' => $insert_id]
             ], REST_Controller::HTTP_OK);
+        }else {
+            $this->response([
+                'status' => FALSE,
+                'message' => "Data Gagal DiSimpan"
+            ], REST_Controller::HTTP_BAD_REQUEST);
         }
     }
 
     public function index_put()
     {
+        $this->form_validation->set_rules('fullnm', 'Nama Lengkap', 'required');
+        $this->form_validation->set_rules('id','required');
+        if ($this->form_validation->run() == FALSE) {
+            return $this->response([
+                'status' => False,
+                'message' => [
+                    'fullnm' => form_error('fullnm'),
+                    'id' => form_error('id')
+                ]
+            ], REST_Controller::HTTP_BAD_REQUEST);
+        }
         $id = $this->put('id');
         $norm = $this->put('no_rm');
-        $fullnm = $this->put('nama');
+        $fullnm = $this->put('fullnm');
         $ukuran = $this->put('ukuran');
         $no_foto = $this->put('no_foto');
         $jenisPeriksa = $this->put('jenisperiksa');
@@ -116,6 +145,11 @@ class Reject extends BaseController
                 'status' => TRUE,
                 'message' => 'Data Reject Berhasil Di Ubah'
             ], REST_Controller::HTTP_OK);
+        }else {
+            $this->response([
+                'status' => FALSE,
+                'message' => "Data Gagal Di Ubah"
+            ], REST_Controller::HTTP_BAD_REQUEST);
         }
     }
 
@@ -123,8 +157,11 @@ class Reject extends BaseController
     {
         $keyword = $this->get('search');
         $usrnme = $this->uid();
-        $getData = $this->db->query("SELECT id,norm, fullnm FROM reject
-        WHERE created_by = '$usrnme' AND norm like '%$keyword%'")->result();
+        $getData = $this->db->query("
+            SELECT temp.* from (
+                SELECT id,fullnm,norm,updated_at,created_at FROM reject
+                WHERE created_by = '$usrnme' AND fullnm like '%$keyword%' order by created_at desc, updated_at desc)as temp 
+                where MONTH(created_at) = MONTH(CURDATE()) or MONTH(updated_at) = MONTH(CURDATE())")->result();
         if ($getData) {
             foreach ($getData as $key => $value) {
                 $arr[] = array(

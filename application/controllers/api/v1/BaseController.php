@@ -9,7 +9,7 @@ use \Firebase\JWT\JWT;
 use Restserver\Libraries\REST_Controller;
 class BaseController extends REST_Controller
 {
-    private $secretkey = 'jon123';
+    private $secretkey = 'apaanpasswordnya';
     private $decode;
     public function __construct()
     {
@@ -29,7 +29,7 @@ class BaseController extends REST_Controller
             $this->response([
                 'status' => FALSE,
                 'message' => 'Wrong Token'
-            ], REST_Controller::HTTP_OK);
+            ], REST_Controller::HTTP_UNAUTHORIZED);
         }
     }
 
