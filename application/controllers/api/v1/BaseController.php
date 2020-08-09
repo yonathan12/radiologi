@@ -22,12 +22,10 @@ class BaseController extends REST_Controller
         $jwt = $this->input->get_request_header('Authorization');
         try {
             $this->decode = JWT::decode($jwt,$this->secretkey,array('HS256'));
-            die(print_r(['error',$this->decode],1));
             if ($this->Login_model->userLogin($this->decode->username)>0) {
                 return true;
             }
         } catch (Exception $e) {
-            die(print_r(['error',$jwt],1));
             $this->response([
                 'status' => FALSE,
                 'message' => 'Wrong Token'
