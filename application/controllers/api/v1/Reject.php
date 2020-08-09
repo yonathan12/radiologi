@@ -47,7 +47,8 @@ class Reject extends BaseController
                 $arr[] = array(
                     'id' => $value->id,
                     'norm' => $value->norm,
-                    'nofoto' => $value->no_foto
+                    'nofoto' => $value->no_foto,
+                    'fullnm' => $value->fullnm
                 );
             }
         }
