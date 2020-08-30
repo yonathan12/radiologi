@@ -40,7 +40,8 @@ class Dosis extends BaseController
                     'berat_badan' => $value->berat_badan,
                     'nop' => $value->nop,
                     'ctdi' => $value->ctdi,
-                    'dlp' => $value->dlp
+                    'dlp' => $value->dlp,
+                    'device_id' => $value->device_id
                 );
             }
         } else {
@@ -84,6 +85,7 @@ class Dosis extends BaseController
         $dlp = $this->post('dlp');
         $kdpasien = $this->post('kdpasien');
         $tgl = $this->post('tanggal');
+        $device_id = $this->post('device_id');
 
         $data = array(
             'tglperiksa' => $tgl ? $tgl : date('Y-m-d'),
@@ -94,6 +96,7 @@ class Dosis extends BaseController
             'nop' => $nop,
             'ctdi' => $ctdi,
             'dlp' => $dlp,
+            'device_id' => $device_id,
             'created_by' => $this->uid(),
             'created_at' => date('Y-m-d H:i:s')
         );
@@ -138,6 +141,7 @@ class Dosis extends BaseController
         $ctdi = $this->put('ctdi');
         $dlp = $this->put('dlp');
         $kdpasien = $this->put('kdpasien');
+        $device_id = $this->post('device_id');
 
         $data = array(
             'tglperiksa' => $tgl ? $tgl : date('Y-m-d'),
@@ -148,6 +152,7 @@ class Dosis extends BaseController
             'nop' => $nop,
             'ctdi' => $ctdi,
             'dlp' => $dlp,
+            'device_id' => $device_id,
             'updated_by' => $this->uid(),
             'updated_at' => date('Y-m-d H:i:s')
         );
@@ -201,5 +206,20 @@ class Dosis extends BaseController
                 'message' => "Gagal Mengambil Data"
             ], REST_Controller::HTTP_BAD_REQUEST);
         }
+    }
+
+    public function get_param_device()
+    {
+        $getData = $this->db->get('device')->result();
+        foreach ($getData as $key => $value) {
+            $arr[] = array(
+                'id' => $value->id,
+                'descr' => $value->descr
+            );
+        }
+        $this->response([
+            'status' => TRUE,
+            'data' => $arr
+        ], REST_Controller::HTTP_OK);
     }
 }

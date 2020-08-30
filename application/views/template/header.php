@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -30,115 +31,122 @@
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <script src="plugins/jquery/jquery.min.js"></script>
 </head>
+
 <body class="hold-transition sidebar-mini layout-fixed">
-<div class="wrapper">
+  <div class="wrapper">
 
-  <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-    <!-- Left navbar links -->
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
-      </li>
-    </ul>
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+      <!-- Left navbar links -->
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
+        </li>
+      </ul>
 
-  </nav>
-  <!-- /.navbar -->
+    </nav>
+    <!-- /.navbar -->
 
-  <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <!-- Brand Logo -->
-    <a href="#" class="brand-link">
-      <span class="brand-text font-weight-light">Radiologi</span>
-    </a>
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+      <!-- Brand Logo -->
+      <a href="#" class="brand-link">
+        <span class="brand-text font-weight-light">Radiologi</span>
+      </a>
 
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <!-- Sidebar user panel (optional) -->
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="info">
-          <a href="#" class="d-block"><?= $this->session->userdata['fullnm']; ?></a>
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+          <div class="info">
+            <a href="#" class="d-block"><?= $this->session->userdata['fullnm']; ?></a>
+          </div>
         </div>
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+          <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <li class="nav-item has-treeview menu-open">
+              <a href="#" class="nav-link klik_menu" id="dashboard">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>
+                  Data Dosis
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="dosis" class="nav-link klik_menu" id="all_data">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>All Data</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item has-treeview menu-open">
+              <a href="#" class="nav-link klik_menu" id="dashboard">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>
+                  Data Film Reject
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="reject" class="nav-link klik_menu" id="all_data">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>All Data</p>
+                  </a>
+                </li>
+
+              </ul>
+            </li>
+            <li class="nav-item has-treeview menu-open">
+              <a href="#" class="nav-link klik_menu" id="dashboard">
+                <i class="nav-icon fas fa-user-alt"></i>
+                <p>
+                  Parameter
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="device" class="nav-link klik_menu" id="all_data">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Parameter Alat</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="film" class="nav-link klik_menu" id="all_data">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Parameter Film</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="user" class="nav-link" id="add_data">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Parameter User</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a href="auth/logout" class="nav-link" id="logout">
+                <i class="nav-icon fas fa-sign-out-alt"></i>
+                <p>Logout</p>
+              </a>
+            </li>
+          </ul>
+        </nav>
       </div>
+    </aside>
 
-      <!-- Sidebar Menu -->
-      <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <li class="nav-item has-treeview menu-open">
-            <a href="#" class="nav-link klik_menu" id="dashboard">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Data Dosis
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="dosis" class="nav-link klik_menu" id="all_data">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>All Data</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item has-treeview menu-open">
-            <a href="#" class="nav-link klik_menu" id="dashboard">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Data Film Reject
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="reject" class="nav-link klik_menu" id="all_data">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>All Data</p>
-                </a>
-              </li>
-              
-            </ul>
-          </li>
-          <li class="nav-item has-treeview menu-open">
-            <a href="#" class="nav-link klik_menu" id="dashboard">
-              <i class="nav-icon fas fa-user-alt"></i>
-              <p>
-                Parameter
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="film" class="nav-link klik_menu" id="all_data">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Parameter Film</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="user" class="nav-link" id="add_data">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Parameter User</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="auth/logout" class="nav-link" id="logout">
-              <i class="nav-icon fas fa-sign-out-alt"></i>
-              <p>Logout</p>
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </div>
-  </aside>
-
-  <div class="content-wrapper">
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
+    <div class="content-wrapper">
+      <div class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+            </div>
           </div>
         </div>
       </div>
-    </div>

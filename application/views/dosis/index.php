@@ -11,6 +11,15 @@
                 <label for="date">&nbsp; Tanggal Akhir &nbsp;</label>
                 <input type="date" class="form-control" name="tgl2">
             </div>
+            <div class="form-group">
+                <label for="device">&nbsp; Alat &nbsp;</label>
+                <select name="device" class="form-control" id="role" required>
+                    <option value="">Pilih Alat</option>
+                    <?php foreach ($device as $key => $value) : ?>
+                        <option value="<?= $value['id'] ?>"><?= $value['descr'] ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
             <div> <label for="date">&nbsp;</label></div>
             <button type="submit" class="btn btn-primary">Export Data</button>
             &nbsp;
@@ -30,6 +39,7 @@
                     <th>NOP</th>
                     <th>CTDI</th>
                     <th>DLP</th>
+                    <th>Alat</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -48,9 +58,10 @@
                         <td><?php echo $value['nop']; ?></td>
                         <td><?php echo $value['ctdi']; ?></td>
                         <td><?php echo $value['dlp']; ?></td>
+                        <td><?php echo $value['descr']; ?></td>
                         <td style="text-align: center;">
                             <form method="POST" action="dosis/delete" id="form_dosis">
-                                <input type="hidden" value="<?= $value['id'] ?>" name="id"/>
+                                <input type="hidden" value="<?= $value['id'] ?>" name="id" />
                                 <button type="submit" class="btn btn-sm btn-danger glyphicon glyphicon-trash" id="delete_dosis">Hapus</button>
                             </form>
                         </td>

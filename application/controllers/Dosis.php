@@ -19,6 +19,7 @@ class Dosis extends CI_Controller
     {
         $getData = $this->Dosis->get_data();
         $data['data'] = $getData;
+        $data['device'] = $this->db->get('device')->result_array();
         $this->load->view('template/header');
         $this->load->view('dosis/index', $data);
         $this->load->view('template/footer');
@@ -41,6 +42,13 @@ class Dosis extends CI_Controller
     {
         $tgl1 = $this->input->post('tgl1');
         $tgl2 = $this->input->post('tgl2');
+        $device_id = $this->input->post('device');
+
+        if($device_id){
+            $device_id = " and a.device_id = $device_id";
+        }else{
+            $device_id = '';
+        }
 
         if ($tgl1 == null && $tgl2 == null) {
             $where = "";
@@ -54,7 +62,12 @@ class Dosis extends CI_Controller
             $where = "WHERE a.created_at >= '$tgl1' AND a.created_at <= '$tgl2'";
         }
 
-        $data = $this->db->query('SELECT a.*,b.username FROM dosis a JOIN user b ON a.created_by = b.id ' . $where . '')->result_object();
+        $data = $this->db->query("
+                select a.*,b.username, c.descr from dosis a 
+                join user b on a.created_by = b.id
+                join device c on a.device_id = c.id
+                $where $device_id order by a.created_at asc
+            ")->result_object();
         
         $writer = WriterEntityFactory::createXLSXWriter();
 
@@ -71,6 +84,7 @@ class Dosis extends CI_Controller
             "NOP",
             "CTDI",
             "DLP",
+            "Nama Alat",
             "User",
             "Tanggal Dibuat"
         ));
@@ -89,6 +103,7 @@ class Dosis extends CI_Controller
                 $value->nop,
                 $value->ctdi,
                 $value->dlp,
+                $value->descr,
                 $value->username,
                 $value->created_at,
             ]);
