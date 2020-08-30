@@ -10,7 +10,6 @@ class Dosis extends BaseController
     public function __construct()
     {
         parent::__construct();
-        $this->load->library('form_validation');
     }
 
     public function index_get()
@@ -68,15 +67,6 @@ class Dosis extends BaseController
 
     public function index_post()
     {
-        $this->form_validation->set_rules('fullnm', 'Nama Lengkap', 'required');
-        if ($this->form_validation->run() == FALSE) {
-            return $this->response([
-                'status' => False,
-                'message' => [
-                    'fullnm' => form_error('fullnm')
-                ]
-            ], REST_Controller::HTTP_BAD_REQUEST);
-        }
         $fullnm = $this->post('fullnm');
         $umur = $this->post('umur');
         $beratBadan = $this->post('beratBadan');
@@ -121,17 +111,6 @@ class Dosis extends BaseController
 
     public function index_put()
     {
-        $this->form_validation->set_rules('fullnm', 'Nama Lengkap', 'required');
-        $this->form_validation->set_rules('id', 'required');
-        if ($this->form_validation->run() == FALSE) {
-            return $this->response([
-                'status' => False,
-                'message' => [
-                    'fullnm' => form_error('fullnm'),
-                    'id' => form_error('id')
-                ]
-            ], REST_Controller::HTTP_BAD_REQUEST);
-        }
         $id = $this->put('id');
         $fullnm = $this->put('fullnm');
         $tgl = $this->put('tanggal');
